@@ -13,9 +13,9 @@ BIN2=13
 a=3
 b=15
 
+# # L298N 듀얼 H 브리지 최대 20W
+
 sig=deque([1,0,0,0])
-# 
-step=100
 
 GPIO.setup(AIN1,GPIO.OUT,initial=GPIO.LOW)
 GPIO.setup(BIN1,GPIO.OUT,initial=GPIO.LOW)
