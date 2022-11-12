@@ -1,0 +1,37 @@
+#사원
+CREATE TABLE Manager(
+    MNumber  NUMBER(5) PRIMARY KEY,
+    MName    VARCHAR(8) NOT NULL,
+    MId      VARCHAR(20) NOT NULL,
+    Mpw      VARCHAR(20) NOT NULL
+    );
+
+#접속이력
+CREATE TABLE Con(
+    CTime    DATE,
+    CNumber  NUMBER(5),
+    
+    CONSTRAINT CNumber foreign key(CNumber) references Manager (MNumber)
+    );
+
+    
+#제품
+CREATE TABLE PRD(
+    PPdNumber  NUMBER(6) PRIMARY KEY,
+    PDATE    DATE,
+    PINCH    NUMBER(4),
+    PRfh     VARCHAR(10),
+    PPn      VARCHAR(10)
+    );
+
+#생산관리
+CREATE TABLE PRM(
+    PRTime    DATE,
+    PRPdNumber  NUMBER(6),
+    PRNumber    NUMBER(5),
+    PRResult  NUMBER(6),
+    
+    CONSTRAINT PRPdNumber foreign key(PRPdNumber) references PRD (PPdNumber),
+    CONSTRAINT PRNumber foreign key(PRNumber) references Manager (MNumber)
+   ); 
+   
