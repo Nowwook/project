@@ -1,0 +1,16 @@
+SD카드의 폴더 중 BOOT폴더의 
+
+config.txt 파일을 열어서
+
+# 삭제
+hdmi_safe=1
+저장
+
+위에 시도 후 안될시
+
+
+hdmi_force_hotplug=1 
+hdmi_drive=2  
+config_hdmi_boost=4
+# 삭제
+저장
