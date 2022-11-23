@@ -8,11 +8,11 @@ GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(m, GPIO.IN)
 
-# 5v 전원, 근접시 input(m)==0
+# 5v 전원
 
 while True:
-    if GPIO.input(m)==0:
-        print("1")
+    if GPIO.input(m)==1:
+        print("감지 O")
     else:
-        print("0")
+        print("감지 X")
     time.sleep(1)
