@@ -2,12 +2,19 @@ import cv2
 import numpy as np
 import time
 from picamera import PiCamera
-from time import sleep
+import RPi.GPIO as GPIO
 
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+
+on = 19
+GPIO.setup(on,GPIO.OUT,initial=GPIO.LOW)
 
 def capture():
+    GPIO.output(on,1)
     PiCamera.capture('a.png')
     img = cv2.imread('a.png')
+    GPIO.output(on,0)
     return img
     
 def qr(img):
@@ -20,11 +27,9 @@ def qr(img):
         return barcode_data
 
 def classify(img):
-    image_gray = cv2.imread(img, cv2.IMREAD_GRAYSCALE) 
+    # image_gray = cv2.imread(img, cv2.IMREAD_GRAYSCALE) 
 
-    blur = cv2.GaussianBlur(image_gray, ksize=(5,5), sigmaX=0)
-    ret, thresh1 = cv2.threshold(blur, 127, 255, cv2.THRESH_BINARY)
-
+    blur = cv2.GaussianBlur(img, ksize=(5,5), sigmaX=0)
     edged = cv2.Canny(blur, 50, 250)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7,7))
