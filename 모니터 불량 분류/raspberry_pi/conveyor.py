@@ -32,8 +32,8 @@ currnet_pos = Position.MIDDLE
 def set_default_postion():
     currnet_pos = Position.MIDDLE
 
-def motor(s,r):
-    t = int(s*5/9)
+def motor(Angle,Way):
+    t = int(Angle*5/9)
     for cnt in range(0,t):
         GPIO.output(AIN1,sig[0])
         GPIO.output(BIN1,sig[1])
@@ -41,7 +41,7 @@ def motor(s,r):
         GPIO.output(BIN2,sig[3])
         time.sleep(0.01)
         
-        sig.rotate(r)
+        sig.rotate(Way)
 
 def moving( _position:Position ):
     move_way = currnet_pos - _position
