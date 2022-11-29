@@ -1,22 +1,27 @@
 import cv2
 import numpy as np
 import time
-from picamera import PiCamera
 import RPi.GPIO as GPIO
+from pyzbar import pyzbar
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
+def INIT_1():
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(on,GPIO.OUT,initial=GPIO.LOW)
 
-on = 19
-GPIO.setup(on,GPIO.OUT,initial=GPIO.LOW)
+on = 13
 
 def capture():
     GPIO.output(on,1)
-    PiCamera.capture('a.png')
+    capture = cv2.VideoCapture(0)
+    capture.set(cv2.CAP_PROP_FRAME_WIDTH, 800)
+    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 600)
+    ret, frame = capture.read() 
+    cv2.imwrite("a.png", frame)
     img = cv2.imread('a.png')
     GPIO.output(on,0)
     return img
-    
+
 def qr(img):
     decoded = pyzbar.decode(img)
 
@@ -27,9 +32,20 @@ def qr(img):
         return barcode_data
 
 def classify(img):
-    # image_gray = cv2.imread(img, cv2.IMREAD_GRAYSCALE) 
+    hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV) 
 
-    blur = cv2.GaussianBlur(img, ksize=(5,5), sigmaX=0)
+    bound_lower = np.array([0,0, 0]) 
+    bound_upper = np.array([100, 255, 255]) 
+
+    mask = cv2.inRange(hsv_img, bound_lower, bound_upper) 
+
+    kernel = np.ones((5,5),np.uint8) 
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+
+    seg_img = cv2.bitwise_and(img, img, mask=mask)
+
+    blur = cv2.GaussianBlur(seg_img, ksize=(15,15), sigmaX=0)
     edged = cv2.Canny(blur, 50, 250)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7,7))
