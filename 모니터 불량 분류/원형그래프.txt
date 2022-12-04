@@ -1,0 +1,10 @@
+  string seriesname = "MySeriesName";
+            chart1.Series.Add(seriesname);
+            //set the chart-type to "Pie"
+            chart1.Series[seriesname].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+
+            //Add some datapoints so the series. in this case you can pass the values to this method
+            chart1.Series[seriesname].Points.AddXY("정상제품", 50);
+            chart1.Series[seriesname].Points.AddXY("데드픽셀", 25);
+            chart1.Series[seriesname].Points.AddXY("핫픽셀", 10);
+            chart1.Series[seriesname].Points.AddXY("스턱픽셀", 15);
