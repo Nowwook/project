@@ -58,21 +58,32 @@ def running():
                     else:
                         pos = conveyor.Position.BOTTOM
 
-                    now = conveyor.moving(pos)
+                    conveyor.run()
+                    time.sleep(0.5)
+                    conveyor.stop()
+                    time.sleep(0.2)
+                    conveyor.moving(pos)
+                    time.sleep(0.2)
+
                     conveyor.run()
                     timer_start()
-
-
-            working_time = timer_check()
+                    time.sleep(0.8)
+                    
+            slide_sensor_state = sensor.slide_detect()
             if slide_sensor_state == 1:
                 timer_stop()
                 conveyor.stop()
                 socket_client.send("ROLLING_END")
+                conveyor.set_default_postion()
+                print("1 end")
             
-            if timer_working() and working_time > 2:
+            time.sleep(0.5)
+            working_time = timer_check()
+            if timer_working() and working_time > 1:
                 timer_stop()
                 conveyor.stop()
                 socket_client.send("STUCK")
+                print("2 end")
 
     except Exception as e:
         print( type(e) )
