@@ -14,8 +14,8 @@ on = 13
 def capture():
     GPIO.output(on,1)
     capture = cv2.VideoCapture(0)
-    capture.set(cv2.CAP_PROP_FRAME_WIDTH, 800)
-    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 600)
+    capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     ret, frame = capture.read() 
     cv2.imwrite("a.png", frame)
     img = cv2.imread('a.png')
@@ -27,7 +27,6 @@ def qr(img):
 
     for d in decoded: 
         x, y, w, h = d.rect
-
         barcode_data = d.data.decode("utf-8")
         return barcode_data
 
@@ -43,13 +42,8 @@ def classify(img):
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
 
-    seg_img = cv2.bitwise_and(img, img, mask=mask)
-
-    blur = cv2.GaussianBlur(seg_img, ksize=(15,15), sigmaX=0)
-    edged = cv2.Canny(blur, 50, 250)
-
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7,7))
-    closed = cv2.morphologyEx(edged, cv2.MORPH_CLOSE, kernel)
+    closed = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
     contours, _ = cv2.findContours(closed.copy(),cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
