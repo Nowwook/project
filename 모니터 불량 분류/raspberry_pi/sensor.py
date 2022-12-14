@@ -1,12 +1,13 @@
 import RPi.GPIO as GPIO
 import time
 
-m = 15
-n = 16
+m = 13
+n = 15
 
-def INIT_1():
+def INIT():
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
+
     GPIO.setup(m, GPIO.IN)
     GPIO.setup(n, GPIO.IN)
 
@@ -15,5 +16,3 @@ def start_pos_detect():
 
 def slide_detect():
     return GPIO.input(n)
-    
-GPIO.cleanup()

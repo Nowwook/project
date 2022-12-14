@@ -8,29 +8,29 @@ AIN1=3
 BIN1=7
 AIN2=5
 BIN2=11
-con = 13
+con =21
 
 sig=deque([1,0,0,0])
 
 def INIT_2():
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(AIN1,GPIO.OUT,initial=GPIO.LOW)
-    GPIO.setup(BIN1,GPIO.OUT,initial=GPIO.LOW)
-    GPIO.setup(AIN2,GPIO.OUT,initial=GPIO.LOW)
-    GPIO.setup(BIN2,GPIO.OUT,initial=GPIO.LOW)
+    GPIO.setup(AIN1,GPIO.OUT)
+    GPIO.setup(BIN1,GPIO.OUT)
+    GPIO.setup(AIN2,GPIO.OUT)
+    GPIO.setup(BIN2,GPIO.OUT)
     GPIO.setup(con,GPIO.OUT,initial=GPIO.LOW)
-
 
 class Position(Enum):
     TOP = 1
     MIDDLE = 2
     BOTTOM = 3
 
+global currnet_pos
 currnet_pos = Position.MIDDLE
 
 def set_default_postion():
-    currnet_pos = Position.MIDDLE
+    moving(Position.MIDDLE)
 
 def motor(Angle,Way):
     t = int(Angle*5/9)
@@ -39,12 +39,13 @@ def motor(Angle,Way):
         GPIO.output(BIN1,sig[1])
         GPIO.output(AIN2,sig[2])
         GPIO.output(BIN2,sig[3])
-        time.sleep(0.01)
+        time.sleep(0.02)
         
         sig.rotate(Way)
 
 def moving( _position:Position ):
-    move_way = currnet_pos - _position
+    global currnet_pos
+    move_way = currnet_pos.value - _position.value
     motor( 45, move_way )
     currnet_pos = _position
     
