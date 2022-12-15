@@ -1,0 +1,66 @@
+#사원
+
+CREATE TABLE Manager(
+    MNumber  NUMBER(30) PRIMARY KEY,
+    MName    VARCHAR(50) NOT NULL,
+    MId      VARCHAR(60) NOT NULL,
+    Mpw      VARCHAR(60) NOT NULL
+    );
+
+#접속이력
+CREATE TABLE Con(
+    CTime    VARCHAR(150),
+    CNumber  NUMBER(30),
+    CLTime   VARCHAR(150),
+    CONSTRAINT CNumber foreign key(CNumber) references Manager (MNumber)
+    );
+
+    
+#제품
+CREATE TABLE PRD(
+    PPdNumber  VARCHAR(270) PRIMARY KEY,
+    PDATE    VARCHAR(180),
+    PINCH    NUMBER(30),
+    PPn      VARCHAR(190),
+    PRfh     VARCHAR(190)
+    );
+
+
+#생산관리
+CREATE TABLE PRM(
+    PRTime    VARCHAR(200),
+    PRPdNumber  VARCHAR(270),
+    PRNumber    NUMBER(30),
+    PRResult  VARCHAR(200),
+    
+    CONSTRAINT PRPdNumber foreign key(PRPdNumber) references PRD (PPdNumber),
+    CONSTRAINT PRNumber foreign key(PRNumber) references Manager (MNumber)
+   ); 
+
+#주문
+CREATE TABLE ORD(
+    ORDN  NUMBER(30) PRIMARY KEY,
+    OINCH    NUMBER(30),
+    OPn      VARCHAR(190),
+    ORfh     VARCHAR(190),
+    ONum    NUMBER(30),
+    Ocom    NUMBER(30)
+    );
+
+   
+#값넣기
+INSERT INTO MANAGER VALUES (1, '박동혁', 'pdhyuk', 'pd');
+INSERT INTO MANAGER VALUES (2, '진정학', 'JIN', 'JJH');
+INSERT INTO MANAGER VALUES (3, '김재홍', 'qwer', '1234');
+INSERT INTO MANAGER VALUES (4, '이재욱', 'uk', 'uk');
+INSERT INTO MANAGER VALUES (5, '이승호', '12', '34');
+
+INSERT INTO ORD VALUES (1, 32,'IPS', '60', 6, 0);
+INSERT INTO ORD VALUES (2, 32,'IPS', '144', 6, 0);
+INSERT INTO ORD VALUES (3, 32,'IPS', '240', 6, 0);
+INSERT INTO ORD VALUES (4, 32,'VA', '60', 6, 0);
+INSERT INTO ORD VALUES (5, 32,'VA', '144', 6, 0);
+INSERT INTO ORD VALUES (6, 32,'VA', '240', 6, 0);
+INSERT INTO ORD VALUES (7, 32,'TN', '60', 6, 0);
+INSERT INTO ORD VALUES (8, 32,'TN', '144', 6, 0);
+INSERT INTO ORD VALUES (9, 32,'TN', '240', 6, 0);
