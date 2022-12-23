@@ -91,3 +91,36 @@ INSERT INTO ORD VALUES (9, 32,'TN', '240', 6, 0);
 2ITP6H1612220
 7IIP1H1612220
 2IVP2H1612220
+
+
+SELECT PINCH,PPN,PRFH,count(*) As 출고개수 
+	FROM PRD group by PINCH,PPN,PRFH;
+
+SELECT d.PINCH as 사이즈,
+    d.PPN as 패널,
+    d.PRFH as 주사율,
+    count(*) as 출고_개수,
+    count(CASE WHEN m.prresult='정상' THEN 1 END) as 정상_개수, 
+    count(*)-count(CASE WHEN m.prresult='정상' THEN 1 END) as 비정상_개수 
+    FROM PRD d, PRM m where d.ppdnumber=m.prpdnumber group by d.PINCH,d.PPN,d.PRFH;
+   
+#제품번호 조회
+select G.MNUMBER 담당_사원, D.PPDNUMBER 제품_번호, D.PINCH 사이즈, D.PPN 패널, D.PRFH 주사율, D.PDATE 제작_날짜, M.PRTIME 분류_날짜, M.PRRESULT 분류_결과
+    from MANAGER G, PRD D, PRM M
+    where G.MNUMBER=M.PRNUMBER and D.PPDNUMBER=M.PRPDNUMBER and D.PPDNUMBER='2ITP2H0812224';
+
+#담당자 조회
+select G.MNUMBER 담당_사원, D.PPDNUMBER 제품_번호, D.PINCH 사이즈, D.PPN 패널, D.PRFH 주사율, D.PDATE 제작_날짜, M.PRTIME 분류_날짜, M.PRRESULT 분류_결과
+    from MANAGER G, PRD D, PRM M
+    where G.MNUMBER=M.PRNUMBER and D.PPDNUMBER=M.PRPDNUMBER and G.MNUMBER=1;
+
+#날짜 조회
+select G.MNUMBER 담당_사원, D.PPDNUMBER 제품_번호, D.PINCH 사이즈, D.PPN 패널, D.PRFH 주사율, D.PDATE 제작_날짜, M.PRTIME 분류_날짜, M.PRRESULT 분류_결과
+    from MANAGER G, PRD D, PRM M
+    where G.MNUMBER=M.PRNUMBER and D.PPDNUMBER=M.PRPDNUMBER and (TO_NUMBER(substr(PDATE,9,2))) between 7 and 9;
+ 
+#결과 조회   
+select G.MNUMBER 담당_사원, D.PPDNUMBER 제품_번호, D.PINCH 사이즈, D.PPN 패널, D.PRFH 주사율, D.PDATE 제작_날짜, M.PRTIME 분류_날짜, M.PRRESULT 분류_결과
+    from MANAGER G, PRD D, PRM M
+    where G.MNUMBER=M.PRNUMBER and D.PPDNUMBER=M.PRPDNUMBER and M.PRRESULT='정상';
+   
